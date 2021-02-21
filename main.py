@@ -1,7 +1,7 @@
 import discord
 import random
 import re
-
+import os
 
 class MyClient(discord.Client):
     async def on_ready(self):
@@ -39,4 +39,4 @@ class MyClient(discord.Client):
 
 
 client = MyClient()
-client.run('ODEyMTIzNTk0NDk4NjM3ODQ0.YC8LCQ.za0NE1zQL3HdgpQ0ehm0DdGDx3w')
+client.run(os.getenv('TOKEN'))
