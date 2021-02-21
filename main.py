@@ -44,4 +44,3 @@ client = MyClient()
 load_dotenv()
 token = os.getenv('TOKEN')
 client.run(token)
-
