@@ -2,6 +2,8 @@ import discord
 import random
 import re
 import os
+from dotenv import load_dotenv
+
 
 class MyClient(discord.Client):
     async def on_ready(self):
@@ -39,5 +41,7 @@ class MyClient(discord.Client):
 
 
 client = MyClient()
-client.run(os.getenv('TOKEN'))
+load_dotenv()
+token = os.getenv('TOKEN')
+client.run(token)
 
