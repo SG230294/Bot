@@ -10,13 +10,13 @@ from dotenv import load_dotenv
 
 class MyClient(discord.Client):
 
-    # async def join(self, textchannel, message):
-    #     channel = message.author.voice.channel
-    #     voice = get(client.voice_clients, guild=textchannel.guild)
-    #     if voice and voice.is_connected():
-    #         await voice.move_to(channel)
-    #     else:
-    #         voice = await channel.connect()
+    async def join(self, textchannel, message):
+        channel = message.author.voice.channel
+        voice = get(client.voice_clients, guild=textchannel.guild)
+        if voice and voice.is_connected():
+            await voice.move_to(channel)
+        else:
+            voice = await channel.connect()
 
     async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
