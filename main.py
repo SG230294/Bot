@@ -21,7 +21,7 @@ class MyClient(discord.Client):
             await message.reply(':rainbow_flag: Осуждаю! :rainbow_flag:', mention_author=True)
         elif message.author.id == self.user.id:
             return
-        elif message.content.startswith(prefix + 'dice'):
+        elif message.content.startswith(f'{prefix}dice'):
             await message.delete()
             channel = client.get_channel(message.channel.id)
             author: str = message.author.name
@@ -29,13 +29,13 @@ class MyClient(discord.Client):
             die1 = dies[random.randint(0, 5)]
             die2 = dies[random.randint(0, 5)]
             await channel.send(author + " бросает кости и выкидывает:   " + die1 + "   " + die2)
-        elif message.content.startswith(prefix + 'rap'):
+        elif message.content.startswith(f'{prefix}rap'):
             channel = client.get_channel(message.channel.id)
             f = open('lyrics.txt', encoding="utf-8")
             lines = f.readlines()
-            otvet = lines[random.randint(0, len(lines) - 1)]
-            await channel.send(otvet)
-        if message.content.startswith(prefix + 'test'):
+            otvet =lines[random.randint(0, len(lines) - 1)]
+            await channel.send(otvet, tts=True)
+        if message.content.startswith(f'{prefix}test'):
             file = discord.File("Dice/1.jpg")
             await message.channel.send("", file=file)
 
