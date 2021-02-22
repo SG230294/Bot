@@ -98,8 +98,6 @@ class MyClient(discord.Client):
             voice.source = discord.PCMVolumeTransformer(voice.source)
             voice.source.volume = 1
 
-            # nname = name.rsplit("-", 2)
-            # await channel.send(f"Playing: {nname[0]}")
             print("playing\n")
 
 
