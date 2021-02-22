@@ -18,7 +18,6 @@ class MyClient(discord.Client):
         else:
             voice = await channel.connect()
 
-
     async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
 
@@ -47,20 +46,16 @@ class MyClient(discord.Client):
             f = open('lyrics.txt', encoding="utf-8")
             lines = f.readlines()
             otvet = lines[random.randint(0, len(lines) - 1)]
-            #await channel.send(otvet, tts=True)
+            # await channel.send(otvet, tts=True)
             await channel.send(otvet)
-
 
             voice = get(client.voice_clients, guild=channel.guild)
             voice.play(discord.FFmpegPCMAudio("tts.ogg"), after=lambda e: print("Song done!"))
             voice.source.volume = 1
 
-
         if message.content.startswith(f'{prefix}beat'):
-
             channel = client.get_channel(message.channel.id)
             await client.join(channel, message)
-
             song_there = os.path.isfile("song.mp3")
             try:
                 if song_there:
@@ -70,8 +65,6 @@ class MyClient(discord.Client):
                 print("Trying to delete song file, but it's being played")
                 await channel.send("ERROR: Music playing")
                 return
-
-            # await channel.send("Getting everything ready now")
 
             voice = get(client.voice_clients, guild=channel.guild)
 
@@ -87,18 +80,13 @@ class MyClient(discord.Client):
             with youtube_dl.YoutubeDL(ydl_opts) as ydl:
                 print("Downloading audio now\n")
                 ydl.download(['https://youtu.be/zxASJ0X3784'])
-
             for file in os.listdir("./"):
                 if file.endswith(".mp3"):
-                    name = file
                     print(f"Renamed File: {file}\n")
                     os.rename(file, "song.mp3")
-
             voice.play(discord.FFmpegPCMAudio("song.mp3"), after=lambda e: print("Song done!"))
             voice.source = discord.PCMVolumeTransformer(voice.source)
             voice.source.volume = 1
-
-            print("playing\n")
 
 
 load_dotenv()
