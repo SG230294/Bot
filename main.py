@@ -2,7 +2,7 @@ import discord
 import random
 import re
 import os
-# import youtube_dl
+import youtube_dl
 from dotenv import load_dotenv
 # from discord.ext import commands
 from discord.utils import get
@@ -49,44 +49,44 @@ class MyClient(discord.Client):
             # await channel.send(otvet, tts=True)
             await channel.send(otvet)
 
-        #     voice = get(client.voice_clients, guild=channel.guild)
-        #     voice.play(discord.FFmpegPCMAudio("tts.ogg"), after=lambda e: print("Song done!"))
-        #     voice.source.volume = 1
-        #
-        # if message.content.startswith(f'{prefix}beat'):
-        #     channel = client.get_channel(message.channel.id)
-        #     await client.join(channel, message)
-        #     song_there = os.path.isfile("song.mp3")
-        #     try:
-        #         if song_there:
-        #             os.remove("song.mp3")
-        #             print("Removed old song file")
-        #     except PermissionError:
-        #         print("Trying to delete song file, but it's being played")
-        #         await channel.send("ERROR: Music playing")
-        #         return
-        #
-        #     voice = get(client.voice_clients, guild=channel.guild)
-        #
-        #     ydl_opts = {
-        #         'format': 'bestaudio/best',
-        #         'postprocessors': [{
-        #             'key': 'FFmpegExtractAudio',
-        #             'preferredcodec': 'mp3',
-        #             'preferredquality': '192',
-        #         }],
-        #     }
-        #
-        #     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        #         print("Downloading audio now\n")
-        #         ydl.download(['https://youtu.be/zxASJ0X3784'])
-        #     for file in os.listdir("./"):
-        #         if file.endswith(".mp3"):
-        #             print(f"Renamed File: {file}\n")
-        #             os.rename(file, "song.mp3")
-        #     voice.play(discord.FFmpegPCMAudio("song.mp3"), after=lambda e: print("Song done!"))
-        #     voice.source = discord.PCMVolumeTransformer(voice.source)
-        #     voice.source.volume = 1
+            voice = get(client.voice_clients, guild=channel.guild)
+            voice.play(discord.FFmpegPCMAudio("tts.ogg"), after=lambda e: print("Song done!"))
+            voice.source.volume = 1
+
+        if message.content.startswith(f'{prefix}beat'):
+            channel = client.get_channel(message.channel.id)
+            await client.join(channel, message)
+            song_there = os.path.isfile("song.mp3")
+            try:
+                if song_there:
+                    os.remove("song.mp3")
+                    print("Removed old song file")
+            except PermissionError:
+                print("Trying to delete song file, but it's being played")
+                await channel.send("ERROR: Music playing")
+                return
+
+            voice = get(client.voice_clients, guild=channel.guild)
+
+            ydl_opts = {
+                'format': 'bestaudio/best',
+                'postprocessors': [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': 'mp3',
+                    'preferredquality': '192',
+                }],
+            }
+
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                print("Downloading audio now\n")
+                ydl.download(['https://youtu.be/zxASJ0X3784'])
+            for file in os.listdir("./"):
+                if file.endswith(".mp3"):
+                    print(f"Renamed File: {file}\n")
+                    os.rename(file, "song.mp3")
+            voice.play(discord.FFmpegPCMAudio("song.mp3"), after=lambda e: print("Song done!"))
+            voice.source = discord.PCMVolumeTransformer(voice.source)
+            voice.source.volume = 1
 
 
 load_dotenv()
