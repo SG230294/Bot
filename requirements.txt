@@ -2,7 +2,7 @@ aiohttp==3.7.3
 async-timeout==3.0.1
 attrs==20.3.0
 audioread==2.1.9
-chardet==3.0.4
+chardet==4.0.0
 colorama==0.4.4
 ctx==0.1.2
 discord.py==1.6.0
@@ -25,7 +25,5 @@ traceback2==1.4.0
 typing-extensions==3.7.4.3
 unittest2==1.1.0
 yarl==1.6.3
-
-Discord
 youtube_dl
 ffmpeg
