@@ -1,0 +1,4 @@
+Discord
+youtube_dl
+dotenv
+ffmpeg
