@@ -2,9 +2,9 @@ import discord
 import random
 import re
 import os
-import youtube_dl
+# import youtube_dl
 from dotenv import load_dotenv
-from discord.ext import commands
+# from discord.ext import commands
 from discord.utils import get
 
 
