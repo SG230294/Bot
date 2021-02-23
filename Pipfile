@@ -4,11 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-ffmpeg = "*"
-discord = "*"
-discord.py = "*"
-youtube_dl = "*"
-pynacl = "*"
 
 [dev-packages]
 
