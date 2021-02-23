@@ -8,6 +8,7 @@ ffmpeg = "*"
 discord = "*"
 discord.py = "*"
 youtube_dl = "*"
+pynacl = "*"
 
 [dev-packages]
 
