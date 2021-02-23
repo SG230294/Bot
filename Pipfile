@@ -4,6 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+discord = "*"
+youtube-dl = "*"
+python-dotenv = "*"
+"discord.py" = {extras = ["voice"], version = "*"}
+ffmpeg = "*"
 
 [dev-packages]
 

@@ -5,6 +5,7 @@ import os
 import youtube_dl
 from dotenv import load_dotenv
 from discord.utils import get
+import ffmpeg
 
 
 class MyClient(discord.Client):
@@ -15,7 +16,7 @@ class MyClient(discord.Client):
         if voice and voice.is_connected():
             await voice.move_to(channel)
         else:
-            voice = await channel.connect()
+            await channel.connect()
 
     async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
