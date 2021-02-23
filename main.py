@@ -5,7 +5,6 @@ import os
 import youtube_dl
 from dotenv import load_dotenv
 from discord.utils import get
-import ffmpeg
 
 
 class MyClient(discord.Client):
@@ -23,7 +22,7 @@ class MyClient(discord.Client):
 
     async def on_message(self, message):
         print(message.content)
-        prefix = '!'
+        prefix = ''
         if re.search(r'нигер', message.content.lower()):
             osuzhdenie = ':man_gesturing_no_tone5: Осуждаю! :man_gesturing_no_tone5:'
             if re.search(r'пидор', message.content.lower()):
@@ -47,11 +46,10 @@ class MyClient(discord.Client):
             f = open('lyrics.txt', encoding="utf-8")
             lines = f.readlines()
             otvet = lines[random.randint(0, len(lines) - 1)]
-            # await channel.send(otvet, tts=True)
             await channel.send(otvet)
 
             voice = get(client.voice_clients, guild=channel.guild)
-            voice.play(discord.FFmpegPCMAudio("tts.ogg"), after=lambda e: print("Song done!"))
+            voice.play(discord.FFmpegPCMAudio(executable="ffmpeg/ffmpeg.exe", source="tts.ogg"), after=lambda e: print("Song done!"))
             voice.source.volume = 1
 
         if message.content.startswith(f'{prefix}beat'):
