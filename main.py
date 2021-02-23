@@ -2,9 +2,8 @@ import discord
 import random
 import re
 import os
-# import youtube_dl
+import youtube_dl
 from dotenv import load_dotenv
-# from discord.ext import commands
 from discord.utils import get
 
 
@@ -22,7 +21,7 @@ class MyClient(discord.Client):
         print('Logged on as {0}!'.format(self.user))
 
     async def on_message(self, message):
-        prefix = '.'
+        prefix = '!'
         if re.search(r'нигер', message.content.lower()):
             osuzhdenie = ':man_gesturing_no_tone5: Осуждаю! :man_gesturing_no_tone5:'
             if re.search(r'пидор', message.content.lower()):
