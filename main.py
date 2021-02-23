@@ -22,7 +22,7 @@ class MyClient(discord.Client):
 
     async def on_message(self, message):
         print(message.content)
-        prefix = ''
+        prefix = '.'
         if re.search(r'нигер', message.content.lower()):
             osuzhdenie = ':man_gesturing_no_tone5: Осуждаю! :man_gesturing_no_tone5:'
             if re.search(r'пидор', message.content.lower()):
