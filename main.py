@@ -22,7 +22,7 @@ class MyClient(discord.Client):
 
     async def on_message(self, message):
         print(message.content)
-        if os.getenv('TOKEN') == '1':
+        if os.getenv('TEST') == '1':
             prefix = '.'
         else:
             prefix = '!'
