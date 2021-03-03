@@ -22,7 +22,10 @@ class MyClient(discord.Client):
 
     async def on_message(self, message):
         print(message.content)
-        prefix = '.'
+        if os.getenv('TOKEN'):
+            prefix = '.'
+        else:
+            prefix = '!'
         if re.search(r'нигер', message.content.lower()):
             osuzhdenie = ':man_gesturing_no_tone5: Осуждаю! :man_gesturing_no_tone5:'
             if re.search(r'пидор', message.content.lower()):
@@ -42,17 +45,17 @@ class MyClient(discord.Client):
             await channel.send(author + " бросает кости и выкидывает:   " + die1 + "   " + die2)
         elif message.content.startswith(f'{prefix}rap'):
             channel = client.get_channel(message.channel.id)
-            await client.join(channel, message)
             f = open('lyrics.txt', encoding="utf-8")
             lines = f.readlines()
             otvet = lines[random.randint(0, len(lines) - 1)]
             await channel.send(otvet)
+            if channel:
+                await client.join(channel, message)
+                voice = get(client.voice_clients, guild=channel.guild)
+                voice.play(discord.FFmpegPCMAudio("tts2.ogg"), after=lambda e: print("Song done!"))
+                voice.source.volume = 1
 
-            voice = get(client.voice_clients, guild=channel.guild)
-            voice.play(discord.FFmpegPCMAudio(executable="ffmpeg/ffmpeg.exe", source="tts.ogg"), after=lambda e: print("Song done!"))
-            voice.source.volume = 1
-
-        if message.content.startswith(f'{prefix}beat'):
+        elif message.content.startswith(f'{prefix}beat'):
             channel = client.get_channel(message.channel.id)
             await client.join(channel, message)
             song_there = os.path.isfile("song.mp3")
