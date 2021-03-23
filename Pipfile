@@ -10,6 +10,7 @@ python-dotenv = "*"
 "discord.py" = {extras = ["voice"], version = "*"}
 ffmpeg = "*"
 ffprobe = "*"
+pyglet = "*"
 
 [dev-packages]
 
