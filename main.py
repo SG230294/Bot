@@ -62,8 +62,13 @@ class MyClient(discord.Client):
                 voice = get(client.voice_clients, guild=channel.guild)
                 voice.play(discord.FFmpegPCMAudio("rap.mp3"))
                 voice.source.volume = 1
-
-
+        elif re.search(r'триста', message.content.lower()) or re.search(r'300', message.content.lower()):
+            channel = client.get_channel(message.channel.id)
+            if channel:
+                await client.join(channel, message)
+                voice = get(client.voice_clients, guild=channel.guild)
+                voice.play(discord.FFmpegPCMAudio("otsosi.mp3"))
+                voice.source.volume = 1
 
 load_dotenv()
 client = MyClient()
