@@ -36,7 +36,7 @@ class MyClient(discord.Client):
         elif message.author.id == self.user.id:
             return
         elif message.content.startswith(f'{prefix}dice'):
-            await message.delete()
+            # await message.delete()
             channel = client.get_channel(message.channel.id)
             author: str = message.author.name
             dies = [":one:", ":two:", ":three:", ":four:", ":five:", ":six:"]
@@ -44,16 +44,17 @@ class MyClient(discord.Client):
             die2 = dies[random.randint(0, 5)]
             await channel.send(author + " бросает кости и выкидывает:   " + die1 + "   " + die2)
         elif message.content.startswith(f'{prefix}rap'):
+            # await message.delete()
             channel = client.get_channel(message.channel.id)
             f = open('lyrics.txt', encoding="utf-8")
             lines = f.readlines()
             otvet = lines[random.randint(0, len(lines) - 1)]
             await channel.send(otvet)
-            if channel:
-                await client.join(channel, message)
-                voice = get(client.voice_clients, guild=channel.guild)
-                voice.play(discord.FFmpegPCMAudio("tts2.ogg"), after=lambda e: print("Song done!"))
-                voice.source.volume = 1
+            # if channel:
+            #     await client.join(channel, message)
+            #     voice = get(client.voice_clients, guild=channel.guild)
+            #     voice.play(discord.FFmpegPCMAudio("tts2.ogg"), after=lambda e: print("Song done!"))
+            #     voice.source.volume = 1
 
         elif message.content.startswith(f'{prefix}beat'):
             channel = client.get_channel(message.channel.id)
