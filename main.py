@@ -2,13 +2,12 @@ import discord
 import random
 import re
 import os
-import youtube_dl
 import requests
-from discord.ext import commands
+import youtube_dl
 import asyncio
 from dotenv import load_dotenv
 from discord.utils import get
-import pyglet
+from discord.ext import commands
 
 class MyClient(discord.Client):
 
@@ -62,13 +61,20 @@ class MyClient(discord.Client):
                 voice = get(client.voice_clients, guild=channel.guild)
                 voice.play(discord.FFmpegPCMAudio("rap.mp3"))
                 voice.source.volume = 1
-        elif re.search(r'триста', message.content.lower()) or re.search(r'300', message.content.lower()):
+        if re.search(r'триста', message.content.lower()) or re.search(r'300', message.content.lower()):
             channel = client.get_channel(message.channel.id)
             if channel:
                 await client.join(channel, message)
                 voice = get(client.voice_clients, guild=channel.guild)
                 voice.play(discord.FFmpegPCMAudio("otsosi.mp3"))
                 voice.source.volume = 1
+        # if re.search(r'нет', message.content.lower()):
+        #     channel = client.get_channel(message.channel.id)
+        #     if channel:
+        #         await client.join(channel, message)
+        #         voice = get(client.voice_clients, guild=channel.guild)
+        #         voice.play(discord.FFmpegPCMAudio("pidora_otvet.wav"))
+        #         voice.source.volume = 1
 
 load_dotenv()
 client = MyClient()
