@@ -45,6 +45,8 @@ class MyClient(discord.Client):
             die1 = dies[random.randint(0, 5)]
             die2 = dies[random.randint(0, 5)]
             await channel.send(author + " бросает кости и выкидывает:   " + die1 + "   " + die2)
+        elif message.content.startswith(f'{prefix}p'):
+            await channel.send("./play link")
         elif message.content.startswith(f'{prefix}rap') or re.search(r'рэп', message.content.lower()):
             # await message.delete()
             channel = client.get_channel(message.channel.id)
