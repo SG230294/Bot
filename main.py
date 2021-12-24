@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from discord.utils import get
 from discord.ext import commands
 
+
 class MyClient(discord.Client):
 
     async def join(self, textchannel, message):
@@ -28,17 +29,8 @@ class MyClient(discord.Client):
             prefix = '.'
         else:
             prefix = '!'
-        if re.search(r'нигер', message.content.lower()):
-            osuzhdenie = ':man_gesturing_no_tone5: Осуждаю! :man_gesturing_no_tone5:'
-            if re.search(r'пидор', message.content.lower()):
-                osuzhdenie = ':rainbow_flag: СУПЕР ОСУЖДЕНИЕ! :man_gesturing_no_tone5:'
-            await message.reply(osuzhdenie, mention_author=True)
-        elif re.search(r'пидор', message.content.lower()):
-            await message.reply(':rainbow_flag: Осуждаю! :rainbow_flag:', mention_author=True)
-        elif message.author.id == self.user.id:
-            return
-        elif message.content.startswith(f'{prefix}dice'):
-            # await message.delete()
+        if message.content.startswith(f'{prefix}dice'):
+            await message.delete()
             channel = client.get_channel(message.channel.id)
             author: str = message.author.name
             dies = [":one:", ":two:", ":three:", ":four:", ":five:", ":six:"]
@@ -46,6 +38,7 @@ class MyClient(discord.Client):
             die2 = dies[random.randint(0, 5)]
             await channel.send(author + " бросает кости и выкидывает:   " + die1 + "   " + die2)
         elif message.content.startswith(f'{prefix}p'):
+            channel = client.get_channel(message.channel.id)
             await channel.send("./play link")
         elif message.content.startswith(f'{prefix}rap') or re.search(r'рэп', message.content.lower()):
             # await message.delete()
@@ -55,7 +48,9 @@ class MyClient(discord.Client):
             otvet = lines[random.randint(0, len(lines) - 1)]
             await channel.send(otvet)
             text_to_speech = otvet
-            request = requests.get(f'http://api.voicerss.org/?key=38da421963d847439fb86dcddff7cac3&src={text_to_speech}&hl=ru-ru&v=Peter&f=8khz_8bit_stereo')
+            apikey = '38da421963d847439fb86dcddff7cac3'
+            language = 'ru-ru'
+            request = requests.get(f'http://api.voicerss.org/?key={apikey}&src={text_to_speech}&hl={language}&v=Peter&f=8khz_8bit_stereo&r=1')
             with open('rap.mp3', 'wb') as file:
                 file.write(request.content)
             if channel:
@@ -63,20 +58,14 @@ class MyClient(discord.Client):
                 voice = get(client.voice_clients, guild=channel.guild)
                 voice.play(discord.FFmpegPCMAudio("rap.mp3"))
                 voice.source.volume = 1
-        if re.search(r'триста', message.content.lower()) or re.search(r'300', message.content.lower()):
+        if re.search(r'300[!?*.$%:;")( ]+$|300$|триста$|триста[!?*.$%:;")( ]+$', message.content.lower()):
             channel = client.get_channel(message.channel.id)
             if channel:
                 await client.join(channel, message)
                 voice = get(client.voice_clients, guild=channel.guild)
                 voice.play(discord.FFmpegPCMAudio("otsosi.mp3"))
                 voice.source.volume = 1
-        # if re.search(r'нет', message.content.lower()):
-        #     channel = client.get_channel(message.channel.id)
-        #     if channel:
-        #         await client.join(channel, message)
-        #         voice = get(client.voice_clients, guild=channel.guild)
-        #         voice.play(discord.FFmpegPCMAudio("pidora_otvet.wav"))
-        #         voice.source.volume = 1
+
 
 load_dotenv()
 client = MyClient()
