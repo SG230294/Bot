@@ -39,7 +39,14 @@ class MyClient(discord.Client):
             await channel.send(author + " бросает кости и выкидывает:   " + die1 + "   " + die2)
         elif message.content.startswith(f'{prefix}p'):
             channel = client.get_channel(message.channel.id)
-            await channel.send("./play link")
+            templist = message.content.split()
+            templist.pop(0)
+            respond = ''.join(templist)
+            try:
+                await message.delete()
+            except:
+                print('err')
+            await channel.send("./play " + respond)
         elif message.content.startswith(f'{prefix}rap') or re.search(r'рэп', message.content.lower()):
             # await message.delete()
             channel = client.get_channel(message.channel.id)
