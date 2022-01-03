@@ -8,6 +8,8 @@ import asyncio
 from dotenv import load_dotenv
 from discord.utils import get
 from discord.ext import commands
+from yt_dlp import YoutubeDL
+
 
 
 class MyClient(discord.Client):
@@ -41,12 +43,30 @@ class MyClient(discord.Client):
             channel = client.get_channel(message.channel.id)
             templist = message.content.split()
             templist.pop(0)
-            respond = ''.join(templist)
-            try:
-                await message.delete()
-            except:
-                print('err')
-            await channel.send("./play " + respond)
+            link = ''.join(templist)
+            # try:
+            #      await message.delete()
+            # except:
+            #     print('err')
+            ydl_opts = {'format': 'bestaudio',
+                        'outtmpl': 'track.%(ext)s'
+                        #'extract-audio': True
+                        # 'postprocessors': [{
+                        #     'audio-format': 'mp3'
+                        #}],
+                        }
+            os.remove('track.webm')
+            with YoutubeDL(ydl_opts) as ydl:
+                try:
+                    ydl.download([link])
+                except:
+                    print('err')
+            await channel.send("done")
+            if channel:
+                await client.join(channel, message)
+                voice = get(client.voice_clients, guild=channel.guild)
+                voice.play(discord.FFmpegPCMAudio("track.webm"))
+                voice.source.volume = 1
         elif message.content.startswith(f'{prefix}rap') or re.search(r'рэп', message.content.lower()):
             # await message.delete()
             channel = client.get_channel(message.channel.id)
