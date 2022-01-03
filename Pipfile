@@ -12,6 +12,7 @@ ffmpeg = "*"
 ffprobe = "*"
 pyglet = "*"
 requests = "*"
+yt_dlp = "*"
 
 [dev-packages]
 
