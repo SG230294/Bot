@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectPlainTextFileTypeManager">
     <file url="file://$PROJECT_DIR$/lyrics.txt" />
+    <file url="file://$PROJECT_DIR$/NOTES.txt" />
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="Pipenv (Bot)" project-jdk-type="Python SDK" />
 </project>
