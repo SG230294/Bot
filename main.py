@@ -61,12 +61,16 @@ class MyClient(discord.Client):
                     ydl.download([link])
                 except:
                     print('err')
+                    await channel.send("Error: говно не загрузилось с ютаба, по какойто причине")
             await channel.send("done")
             if channel:
                 await client.join(channel, message)
                 voice = get(client.voice_clients, guild=channel.guild)
-                voice.play(discord.FFmpegPCMAudio("track.webm"))
-                voice.source.volume = 1
+                try:
+                    voice.play(discord.FFmpegPCMAudio("track.webm"))
+                    voice.source.volume = 1
+                except:
+                    await channel.send("Error: Не получается воспроизвести")
         elif message.content.startswith(f'{prefix}rap') or re.search(r'рэп', message.content.lower()):
             # await message.delete()
             channel = client.get_channel(message.channel.id)
