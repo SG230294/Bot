@@ -3,18 +3,19 @@ import random
 import re
 import os
 import requests
-import youtube_dl
 import asyncio
 from dotenv import load_dotenv
 from discord.utils import get
 from discord.ext import commands
 from yt_dlp import YoutubeDL
 
+globalQueue = {}
 
 
 class MyClient(discord.Client):
 
-    async def join(self, textchannel, message):
+    @staticmethod
+    async def join(textchannel, message):
         channel = message.author.voice.channel
         voice = get(client.voice_clients, guild=textchannel.guild)
         if voice and voice.is_connected():
@@ -24,6 +25,37 @@ class MyClient(discord.Client):
 
     async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
+
+    @staticmethod
+    def add_to_queue(link, guildid):
+        if guildid in globalQueue:
+            globalQueue.get(guildid).append(link)
+        else:
+            globalQueue.update({guildid: [link]})
+
+    def play_from_queue(self, message):
+        channel = client.get_channel(message.channel.id)
+        if len(globalQueue.get(message.guild.id)) > 0:
+            link = globalQueue.get(message.guild.id).pop(0)
+            ydl_opts = {'format': 'bestaudio', 'outtmpl': 'track.%(ext)s'}
+
+            if os.path.isfile("track.webm"):
+                os.remove("track.webm")
+
+            with YoutubeDL(ydl_opts) as ydl:
+                try:
+                    ydl.download([link])
+                finally:
+                    pass
+
+            if channel:
+                voice = get(client.voice_clients, guild=channel.guild)
+                try:
+                    source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio("track.webm"))
+                    voice.play(source, after=lambda _: self.play_from_queue(message))
+                    voice.source.volume = 1
+                finally:
+                    pass
 
     async def on_message(self, message):
         print(message.content)
@@ -41,36 +73,21 @@ class MyClient(discord.Client):
             await channel.send(author + " бросает кости и выкидывает:   " + die1 + "   " + die2)
         elif message.content.startswith(f'{prefix}p'):
             channel = client.get_channel(message.channel.id)
+            await client.join(channel, message)
             templist = message.content.split()
             templist.pop(0)
             link = ''.join(templist)
-            # try:
-            #      await message.delete()
-            # except:
-            #     print('err')
-            ydl_opts = {'format': 'bestaudio',
-                        'outtmpl': 'track.%(ext)s'
-                        #'extract-audio': True
-                        # 'postprocessors': [{
-                        #     'audio-format': 'mp3'
-                        #}],
-                        }
-            os.remove('track.webm')
-            with YoutubeDL(ydl_opts) as ydl:
+
+            voice = get(client.voice_clients, guild=channel.guild)
+            if voice.is_playing():
+                self.add_to_queue(link, message.guild.id)
+            else:
+                self.add_to_queue(link, message.guild.id)
                 try:
-                    ydl.download([link])
-                except:
-                    print('err')
-                    await channel.send("Error: говно не загрузилось с ютаба, по какойто причине")
-            await channel.send("done")
-            if channel:
-                await client.join(channel, message)
-                voice = get(client.voice_clients, guild=channel.guild)
-                try:
-                    voice.play(discord.FFmpegPCMAudio("track.webm"))
-                    voice.source.volume = 1
-                except:
-                    await channel.send("Error: Не получается воспроизвести")
+                    self.play_from_queue(message)
+                finally:
+                    pass
+
         elif message.content.startswith(f'{prefix}rap') or re.search(r'рэп', message.content.lower()):
             # await message.delete()
             channel = client.get_channel(message.channel.id)
@@ -89,6 +106,38 @@ class MyClient(discord.Client):
                 voice = get(client.voice_clients, guild=channel.guild)
                 voice.play(discord.FFmpegPCMAudio("rap.mp3"))
                 voice.source.volume = 1
+        elif message.content.startswith(f'{prefix}add'):
+            channel = client.get_channel(message.channel.id)
+            templist = message.content.split()
+            templist.pop(0)
+            link = ''.join(templist)
+            self.add_to_queue(link, message.guild.id)
+            print(globalQueue)
+            await channel.send("добавленно в очередь")
+
+        elif message.content.startswith(f'{prefix}q'):
+            channel = client.get_channel(message.channel.id)
+            if not globalQueue.get(message.guild.id) is None:
+                text_queue = 'Очередь:' + '\n'
+                i = 0
+                for lnk in globalQueue.get(message.guild.id):
+                    i += 1
+                    text_queue += '['+str(i)+'] ['+lnk+']' + '\n'
+            else:
+                text_queue = 'Очередь пуста'
+            await channel.send(text_queue)
+        elif message.content.startswith(f'{prefix}ch'):
+            channel = client.get_channel(message.channel.id)
+            voice = get(client.voice_clients, guild=channel.guild)
+            if voice.is_playing():
+                await channel.send("Играет баян")
+            else:
+                await channel.send("баян НЕ играет")
+        elif message.content.startswith(f'{prefix}s'):
+            channel = client.get_channel(message.channel.id)
+            voice = get(client.voice_clients, guild=channel.guild)
+            voice.stop()
+            await channel.send("Стоп")
         if re.search(r'300[!?*.$%:;")( ]+$|300$|триста$|триста[!?*.$%:;")( ]+$', message.content.lower()):
             channel = client.get_channel(message.channel.id)
             if channel:
