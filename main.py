@@ -37,7 +37,7 @@ class MyClient(discord.Client):
         channel = client.get_channel(message.channel.id)
         if len(globalQueue.get(message.guild.id)) > 0:
             link = globalQueue.get(message.guild.id).pop(0)
-            ydl_opts = {'format': 'bestaudio', 'outtmpl': 'track.%(ext)s', 'player_client' : 'tv_embedded'}
+            ydl_opts = {'format': 'bestaudio', 'outtmpl': 'track.%(ext)s'}
 
             if os.path.isfile("track.webm"):
                 os.remove("track.webm")
