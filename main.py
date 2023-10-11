@@ -21,7 +21,7 @@ class MyClient(discord.Client):
         print('Logged on as {0}!'.format(self.user))
 
     @staticmethod
-    def add_to_queue(link, guildid):
+    async def add_to_queue(link, guildid):
         with YoutubeDL() as ydl:
             try:
                 info = ydl.extract_info(link, download=False)
@@ -94,7 +94,7 @@ class MyClient(discord.Client):
             templist.pop(0)
             link = ''.join(templist)
             voice = get(client.voice_clients, guild=channel.guild)
-            self.add_to_queue(link, message.guild.id)
+            await self.add_to_queue(link, message.guild.id)
             if not voice.is_playing():
                 try:
                     self.play_from_queue(message)
